@@ -66,7 +66,7 @@ def get_user(id):
     except Exception as e:
         return jsonify({"msg": str(e)}), 500
 
-@app.route('/planet', methods=['GET'])#SEGUIR TESTEANDO
+@app.route('/planet', methods=['GET'])
 def get_planets():
     try:
         results_query = Planet.query.all()
@@ -74,7 +74,7 @@ def get_planets():
         if results_query:
             response_body = {
             "msg": "Ok",
-            "results": results_query.serialize()
+            "results": results
             }
             return jsonify(response_body), 200
         return jsonify({"msg": "No hay planetas"}), 404
