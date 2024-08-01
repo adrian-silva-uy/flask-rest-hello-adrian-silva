@@ -114,6 +114,30 @@ def create_user():
         return jsonify(response_body), 200
     except Exception as e:
         return jsonify({"msg": str(e)}), 500
+    
+
+@app.route('/planet', methods=['POST'])
+def create_planet():
+    try:
+        data = request.get_json()
+        existing_planet = Planet.query.filter_by(name=data["name"]).first()
+        
+        if existing_planet:
+            return jsonify({"msg": "Planet's name already exists"}), 400
+
+        planet_created = Planet(name=data["name"], rotation_period=data["rotation_period"], orbital_period=data["orbital_period"], 
+                                diameter=data["diameter"], climate=data["climate"], gravity=data["gravity"], terrain=data["terrain"],
+                                surface_water=data["surface_water"], population=data["population"])
+
+
+        db.session.add(planet_created)
+        db.session.commit()
+        response_body = {
+            "msg": "Planet created successfully",
+        }
+        return jsonify(response_body), 200
+    except Exception as e:
+        return jsonify({"msg": str(e)}), 500
 
 #Characters/People
 @app.route('/character', methods=['GET'])

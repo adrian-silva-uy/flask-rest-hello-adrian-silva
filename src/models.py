@@ -44,7 +44,7 @@ class Planet(db.Model):
     gravity = db.Column(db.String(50))
     terrain = db.Column(db.String(100))
     surface_water = db.Column(db.Integer)
-    population = db.Column(db.Integer)
+    population = db.Column(db.BigInteger)
     like = db.Column(db.Boolean)
     favorite = db.relationship('Favorite', backref='planet', lazy=True)
     def __repr__(self):
