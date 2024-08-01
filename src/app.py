@@ -186,8 +186,7 @@ def create_character():
             skin_color=data["skin_color"],
             eye_color=data["eye_color"],
             birth_year=data["birth_year"],
-            gender=data["gender"],
-            homeworld=data["homeworld"]
+            gender=data["gender"]
         )
 
         db.session.add(character_created)
