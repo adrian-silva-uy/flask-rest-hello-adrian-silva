@@ -96,26 +96,6 @@ def get_planet(id):
     except Exception as e:
         return jsonify({"msg": str(e)}), 500
 
-@app.route('/user', methods=['POST'])
-def create_user():
-    try:
-        data = request.get_json()
-        existing_user = User.query.filter_by(email=data["email"]).first()
-        
-        if existing_user:
-            return jsonify({"msg": "Email already exists"}), 400
-
-        user_created = User(name=data["name"], email=data["email"], password=data["password"], is_active=data["is_active"])
-        db.session.add(user_created)
-        db.session.commit()
-        response_body = {
-            "msg": "User created successfully",
-        }
-        return jsonify(response_body), 200
-    except Exception as e:
-        return jsonify({"msg": str(e)}), 500
-    
-
 @app.route('/planet', methods=['POST'])
 def create_planet():
     try:
@@ -139,6 +119,25 @@ def create_planet():
     except Exception as e:
         return jsonify({"msg": str(e)}), 500
 
+@app.route('/user', methods=['POST'])
+def create_user():
+    try:
+        data = request.get_json()
+        existing_user = User.query.filter_by(email=data["email"]).first()
+        
+        if existing_user:
+            return jsonify({"msg": "Email already exists"}), 400
+
+        user_created = User(name=data["name"], email=data["email"], password=data["password"], is_active=data["is_active"])
+        db.session.add(user_created)
+        db.session.commit()
+        response_body = {
+            "msg": "User created successfully",
+        }
+        return jsonify(response_body), 200
+    except Exception as e:
+        return jsonify({"msg": str(e)}), 500
+    
 #Characters/People
 @app.route('/character', methods=['GET'])
 def get_characters():
@@ -155,7 +154,6 @@ def get_characters():
     except Exception as e:
         return jsonify({"msg": str(e)}), 500
 
-        
 #GET CHARACTER BY ID
 @app.route('/character/<int:id>', methods=['GET'])
 def get_character(id):
@@ -170,6 +168,37 @@ def get_character(id):
         return jsonify({"msg": "Personaje no encontrado"}), 404
     except Exception as e:
         return jsonify({"msg": str(e)}), 500
+
+@app.route('/character', methods=['POST'])
+def create_character():
+    try:
+        data = request.get_json()
+        existing_character = Character.query.filter_by(name=data["name"]).first()
+        
+        if existing_character:
+            return jsonify({"msg": "Character's name already exists"}), 400
+
+        character_created = Character(
+            name=data["name"],
+            height=data["height"],
+            mass=data["mass"],
+            hair_color=data["hair_color"],
+            skin_color=data["skin_color"],
+            eye_color=data["eye_color"],
+            birth_year=data["birth_year"],
+            gender=data["gender"],
+            homeworld=data["homeworld"]
+        )
+
+        db.session.add(character_created)
+        db.session.commit()
+        response_body = {
+            "msg": "Character created successfully",
+        }
+        return jsonify(response_body), 200
+    except Exception as e:
+        return jsonify({"msg": str(e)}), 500
+
 
 #GET FAVORITES BY USER ID
 @app.route('/users/<int:id>/favorites', methods=['GET'])
